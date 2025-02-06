@@ -1,39 +1,53 @@
 <template>
   <v-card>
     <v-card-title>📊 Risultati</v-card-title>
-    <v-data-table :headers="headers" :items="asteroids" dense>
+    <v-data-table :headers="headers" :items="formattedAsteroids" dense>
       <template v-slot:item.nome="{ item }">
-        {{ item[0] }}
+        {{ item.nome }}
       </template>
       <template v-slot:item.data="{ item }">
-        {{ item[3] }}
+        {{ item.data }}
       </template>
       <template v-slot:item.dist="{ item }">
-        {{ parseFloat(item[4]).toFixed(4) }} AU
+        {{ item.dist }} AU
       </template>
       <template v-slot:item.v_rel="{ item }">
-        {{ parseFloat(item[7]).toFixed(2) }} km/s
+        {{ item.v_rel }} km/s
       </template>
       <template v-slot:item.h="{ item }">
-        {{ item[10] || 'N/A' }}
+        {{ item.h || 'N/A' }}
       </template>
     </v-data-table>
   </v-card>
 </template>
 
-<script>
-export default {
-  props: ['asteroids'],
-  setup() {
-    const headers = [
-      { title: 'Nome', key: 'nome' },
-      { title: 'Data', key: 'data' },
-      { title: 'Distanza (AU)', key: 'dist' },
-      { title: 'Velocità (km/s)', key: 'v_rel' },
-      { title: 'Magnitudine', key: 'h' },
-    ];
+<script setup>
+import { computed } from 'vue';
 
-    return { headers };
+// Props
+const props = defineProps({
+  asteroids: {
+    type: Array,
+    required: true,
   },
-};
+});
+
+const headers = [
+  { title: 'Nome', key: 'nome' },
+  { title: 'Data', key: 'data' },
+  { title: 'Distanza (AU)', key: 'dist' },
+  { title: 'Velocità (km/s)', key: 'v_rel' },
+  { title: 'Magnitudine', key: 'h' },
+];
+
+const formattedAsteroids = computed(() => {
+  return props.asteroids.map((asteroid) => ({
+    nome: asteroid[0], 
+    data: asteroid[3], 
+    dist: asteroid[4] ? parseFloat(asteroid[4]).toFixed(4) : 'N/A', 
+    v_rel: asteroid[7] ? parseFloat(asteroid[7]).toFixed(2) : 'N/A', 
+    h: asteroid[10] || 'N/A', 
+  }));
+});
+
 </script>
