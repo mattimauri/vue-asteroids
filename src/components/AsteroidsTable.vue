@@ -26,11 +26,11 @@ export default {
   props: ['asteroids'],
   setup() {
     const headers = [
-      { text: 'Nome', value: 'nome' },
-      { text: 'Data', value: 'data' },
-      { text: 'Distanza (AU)', value: 'dist' },
-      { text: 'Velocità (km/s)', value: 'v_rel' },
-      { text: 'Magnitudine', value: 'h' },
+      { title: 'Nome', key: 'nome' },
+      { title: 'Data', key: 'data' },
+      { title: 'Distanza (AU)', key: 'dist' },
+      { title: 'Velocità (km/s)', key: 'v_rel' },
+      { title: 'Magnitudine', key: 'h' },
     ];
 
     return { headers };
