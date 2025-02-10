@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue';
 
 const dateMin = ref(new Date().toISOString().split('T')[0]);
 const dateMax = ref(new Date(new Date().setDate(new Date().getDate() + 60)).toISOString().split('T')[0]);
@@ -35,7 +35,17 @@ const distanze = [
   { text: '0.1 AU (100x distanza Luna)', value: '0.1' }
 ];
 
-const distMax = ref(distanze[0].value);
+const distMax = ref(distanze[0].value); 
+
+const emit = defineEmits(['fetch-data']);
+
+onMounted(() => {
+  emit('fetch-data', { 
+    dateMin: dateMin.value, 
+    dateMax: dateMax.value, 
+    distMax: distMax.value 
+  });
+});
 
 watch([dateMin, dateMax, distMax], () => {
   emit('fetch-data', { 
@@ -44,6 +54,4 @@ watch([dateMin, dateMax, distMax], () => {
     distMax: distMax.value 
   });
 });
-
-const emit = defineEmits(['fetch-data']);
 </script>
